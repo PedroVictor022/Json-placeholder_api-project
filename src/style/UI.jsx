@@ -7,6 +7,9 @@ export const Container = styled.div`
 
    background-color: #222;
    color: #fefefe;
+
+   width: 100%;
+   padding: 0.5rem 2rem;
 `;
 
 export const Card = styled.div`
@@ -14,4 +17,20 @@ export const Card = styled.div`
    box-shadow: 0 0 10px rgba(0,0,0,0.5);
    padding: 1rem;
    border-radius: 0.2rem;
+
+   transition: all .1s ease-in-out;
+
+   img {
+      max-width: 100%;
+   }
+
+   h2 {
+      margin-top: 0.5rem;
+      margin-bottom:0.5rem;
+   }
+
+   &:hover {
+      transition: .2s;
+      transform: scale(1.05)
+   }
 `;
