@@ -1,16 +1,17 @@
 import styled from "styled-components";
 
 export const Container = styled.div`
-   display: grid;
-   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-   gap: 1.2rem;
-
    background-color: #222;
    color: #fefefe;
-
    width: 100%;
    padding: 0.5rem 2rem;
 `;
+
+export const ContainerCard = styled.div`
+   display: grid;
+   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+   gap: 1.2rem;
+`
 
 export const Card = styled.div`
    background-color: #333333;
@@ -34,3 +35,9 @@ export const Card = styled.div`
       transform: scale(1.05)
    }
 `;
+
+export const TitleContent = styled.h1`
+   text-align: center;
+   margin-top: 1rem;
+   margin-bottom:1.5rem;
+`

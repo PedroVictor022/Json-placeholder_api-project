@@ -1,5 +1,7 @@
 import { Component, useEffect, useState } from "react"
-import { Card, Container } from "./style/UI";
+import { PostCard } from "./components/postCard";
+import { Title } from "./components/title";
+import { Card, Container, ContainerCard } from "./style/UI";
 
 class App extends Component {
   constructor(props) {
@@ -29,28 +31,31 @@ class App extends Component {
     // Criamos um cover e passamos o array de photos, baseado no index do post e passamos a ulr
     const postsAndPhotos = postJson.map((post, index) => {
       return {
-        ...post, 
+        ...post,
         cover: photosJson[index].url
       }
     })
 
-    this.setState({ posts: postsAndPhotos})
+    this.setState({ posts: postsAndPhotos })
   }
 
   render() {
     const { posts } = this.state
     return (
       <Container>
-        <h1>JSON PLACEHOLDER API</h1>
-        {posts.map(item => {
-          return (
-            <Card key={item.id}>
-              <img src={item.cover} alt={item.title} />
-              <h2>{item.title}</h2>
-              <p>{item.body}</p>
-            </Card>
-          )
-        })}
+        <Title>JSONPLACEHOLDER API</Title>
+        <ContainerCard>
+          {posts.map(item => {
+            return (
+             <PostCard 
+              key={item.id}
+              title={item.title}
+              body={item.body}
+              img={item.cover}
+             />
+            )
+          })}
+        </ContainerCard>
       </Container>
     )
   }
