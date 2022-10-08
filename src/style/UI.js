@@ -4,6 +4,8 @@ export const Container = styled.div`
    background-color: #222;
    color: #fefefe;
    width: 100%;
+   min-height: 100vh;
+   height: 100%;
    padding: 0.5rem 2rem;
 `;
 
@@ -11,6 +13,7 @@ export const ContainerCard = styled.div`
    display: grid;
    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
    gap: 1.2rem;
+   margin-bottom: 1rem;
 `
 
 export const Card = styled.div`

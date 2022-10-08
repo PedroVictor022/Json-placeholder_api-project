@@ -1,14 +1,21 @@
 import { Component, useEffect, useState } from "react"
+import { ButtonFN } from "./components/Button";
 import { PostCard } from "./components/postCard";
+import { Posts } from "./components/posts";
 import { Title } from "./components/title";
-import { Card, Container, ContainerCard } from "./style/UI";
+import { Container } from "./style/UI";
+
+import { dataPosts } from "./utils/LoadPost"
 
 class App extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      posts: []
+      posts: [],
+      allPosts: [],
+      page: 0,
+      postsPerPage: 2
     }
   }
 
@@ -17,26 +24,29 @@ class App extends Component {
   }
 
   loadPosts = async () => {
-    const responsePosts = await fetch('https://jsonplaceholder.typicode.com/posts');
+    const { page, postsPerPage } = this.state;
 
-    const responsePhotos = await fetch('https://jsonplaceholder.typicode.com/photos');
-
-    // Junta as promises em um array
-    const [posts, photos] = await Promise.all([responsePosts, responsePhotos]);
-
-    const postJson = await posts.json();
-    const photosJson = await photos.json();
-
-    // Retorna um objeto, copia tudo do objeto post e joga dentro do objeto retornado
-    // Criamos um cover e passamos o array de photos, baseado no index do post e passamos a ulr
-    const postsAndPhotos = postJson.map((post, index) => {
-      return {
-        ...post,
-        cover: photosJson[index].url
-      }
+    const postsAndPhotos = await dataPosts();
+    this.setState({
+      posts: postsAndPhotos.slice(page, postsPerPage
+      ),
+      allPosts: postsAndPhotos
     })
+  }
 
-    this.setState({ posts: postsAndPhotos })
+  loadMorePosts = () => {
+    console.log('Load more posts chamado');
+    const { page, postsPerPage, allPosts, posts } = this.state;
+
+    const nextPage = (page + postsPerPage);
+    const nextPosts = allPosts.slice(nextPage, nextPage + postsPerPage)  
+
+    posts.push({...nextPage});
+
+    console.log(page, postsPerPage, nextPage, nextPage + postsPerPage)
+    console.log(`Pagina atual ${nextPosts}`)
+    
+    this.setState({posts, page: nextPage})
   }
 
   render() {
@@ -44,18 +54,8 @@ class App extends Component {
     return (
       <Container>
         <Title>JSONPLACEHOLDER API</Title>
-        <ContainerCard>
-          {posts.map(item => {
-            return (
-             <PostCard 
-              key={item.id}
-              title={item.title}
-              body={item.body}
-              img={item.cover}
-             />
-            )
-          })}
-        </ContainerCard>
+        <Posts posts={posts} />
+        <ButtonFN onClick={this.loadMorePosts}>Load More Posts</ButtonFN>
       </Container>
     )
   }
