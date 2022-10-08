@@ -1,7 +1,9 @@
 import { Component, useEffect, useState } from "react"
 import { ButtonFN } from "./components/Button";
+import { Header } from "./components/header";
 import { PostCard } from "./components/postCard";
 import { Posts } from "./components/posts";
+import { InputResearch } from "./components/ResearchInput";
 import { Title } from "./components/title";
 import { Container } from "./style/UI";
 
@@ -15,7 +17,8 @@ class App extends Component {
       posts: [],
       allPosts: [],
       page: 0,
-      postsPerPage: 10
+      postsPerPage: 2,
+      searchValue: ""
     }
   }
 
@@ -51,19 +54,68 @@ class App extends Component {
     console.log(posts)
   }
 
+  handleChange = (e) => {
+    const { searchValue } = this.state
+    const { value } = e.target;
+
+    this.setState({
+      searchValue: value
+    })
+    console.log(searchValue)
+  }
+
   render() {
-    const { posts, postsPerPage, allPosts } = this.state;
+    const { posts, postsPerPage, allPosts, searchValue } = this.state;
 
     const noMorePosts = posts + postsPerPage >= allPosts.length
 
+    const filteredPosts = !!searchValue ?
+      allPosts.filter(post => {
+        return post.title.toLowerCase().includes(searchValue.toLowerCase()
+        );
+      })
+      : posts;
+
     return (
       <Container>
-        <Title>JSONPLACEHOLDER API</Title>
-        <Posts posts={posts} />
-        <ButtonFN
-          onClick={this.loadMorePosts}
-          disabled={noMorePosts}
-        >Load More Posts</ButtonFN>
+        <Header>
+          <Title>JSONPLACEHOLDER API</Title>
+          {/* {
+            !!searchValue && (
+              <>
+                <h3>Search Value: {searchValue}</h3>
+              </>
+            )
+
+          } */}
+          <InputResearch
+            type="search"
+            value={searchValue}
+            onChange={this.handleChange}
+          />
+        </Header>
+
+
+        {
+          filteredPosts.length === 0 ? (
+            <>
+              <Title>Not Found post {searchValue}</Title>
+            </>
+          )
+            :
+            (
+              <Posts posts={filteredPosts} />
+            )
+        }
+
+        {
+          !searchValue && (
+            <ButtonFN
+              onClick={this.loadMorePosts}
+              disabled={noMorePosts}
+            >Load More Posts</ButtonFN>
+          )
+        }
       </Container>
     )
   }

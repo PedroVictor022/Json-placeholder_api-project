@@ -9,6 +9,16 @@ export const Container = styled.div`
    padding: 0.5rem 2rem;
 `;
 
+export const HeaderContainer = styled.div`
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   gap: 1rem;
+
+   margin-top: 1rem;
+   margin-bottom: 1.5rem;
+`
+
 export const ContainerCard = styled.div`
    display: grid;
    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -41,8 +51,6 @@ export const Card = styled.div`
 
 export const TitleContent = styled.h1`
    text-align: center;
-   margin-top: 1rem;
-   margin-bottom:1.5rem;
 `
 
 export const ButtonContent = styled.div`
@@ -68,4 +76,12 @@ export const ButtonContent = styled.div`
       cursor: pointer;
       cursor: pointer;
    }
-`
+`;
+
+export const InputContent = styled.input`
+   padding: 0.3rem;
+   border-radius: 3px;
+   border: none;
+   outline: none;
+   text-align: center;
+`;
