@@ -1,3 +1,5 @@
+import { ButtonContent } from "../style/UI"
+
 export const ButtonFN = ({ children, ...props }) => {
-   return <button {...props}>{children}</button>
+   return <ButtonContent {...props}>{children}</ButtonContent>
 }

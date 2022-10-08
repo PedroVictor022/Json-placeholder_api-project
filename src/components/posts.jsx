@@ -7,6 +7,7 @@ export function Posts({ posts }) {
          {posts.map(item => {
             return (
                <PostCard
+                  id={item.id}
                   key={item.id}
                   title={item.title}
                   body={item.body}

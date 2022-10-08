@@ -44,3 +44,28 @@ export const TitleContent = styled.h1`
    margin-top: 1rem;
    margin-bottom:1.5rem;
 `
+
+export const ButtonContent = styled.div`
+   padding: 1rem;
+   margin-top: 0.7rem;
+   text-align: center;
+
+   font-weight: 700;
+
+   width: 100%;
+   
+   background-color: #7004af;
+   border-radius: 4px;
+
+   transition: all .2s;
+   cursor: pointer;
+   /* &:hover {
+      transition: all .1s;
+      background-color: #8b0bd4;
+   } */
+   &:disabled{
+      background-color: red;
+      cursor: pointer;
+      cursor: pointer;
+   }
+`

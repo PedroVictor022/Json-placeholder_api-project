@@ -15,7 +15,7 @@ class App extends Component {
       posts: [],
       allPosts: [],
       page: 0,
-      postsPerPage: 2
+      postsPerPage: 10
     }
   }
 
@@ -24,7 +24,7 @@ class App extends Component {
   }
 
   loadPosts = async () => {
-    const { page, postsPerPage } = this.state;
+    const { page, postsPerPage } = this.state
 
     const postsAndPhotos = await dataPosts();
     this.setState({
@@ -35,27 +35,35 @@ class App extends Component {
   }
 
   loadMorePosts = () => {
-    console.log('Load more posts chamado');
-    const { page, postsPerPage, allPosts, posts } = this.state;
+    const {
+      page,
+      postsPerPage,
+      allPosts,
+      posts
+    } = this.state;
 
-    const nextPage = (page + postsPerPage);
-    const nextPosts = allPosts.slice(nextPage, nextPage + postsPerPage)  
+    const nextPage = page + postsPerPage;
+    const nextPosts = allPosts.slice(nextPage, nextPage + postsPerPage)
+    posts.push(...nextPosts)
 
-    posts.push({...nextPage});
+    this.setState({ posts, page: nextPage })
 
-    console.log(page, postsPerPage, nextPage, nextPage + postsPerPage)
-    console.log(`Pagina atual ${nextPosts}`)
-    
-    this.setState({posts, page: nextPage})
+    console.log(posts)
   }
 
   render() {
-    const { posts } = this.state
+    const { posts, postsPerPage, allPosts } = this.state;
+
+    const noMorePosts = posts + postsPerPage >= allPosts.length
+
     return (
       <Container>
         <Title>JSONPLACEHOLDER API</Title>
         <Posts posts={posts} />
-        <ButtonFN onClick={this.loadMorePosts}>Load More Posts</ButtonFN>
+        <ButtonFN
+          onClick={this.loadMorePosts}
+          disabled={noMorePosts}
+        >Load More Posts</ButtonFN>
       </Container>
     )
   }
