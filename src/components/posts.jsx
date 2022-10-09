@@ -2,6 +2,7 @@ import { ContainerCard } from "../style/UI"
 import { PostCard } from "./postCard"
 
 export function Posts({ posts }) {
+
    return (
       <ContainerCard>
          {posts.map(item => {

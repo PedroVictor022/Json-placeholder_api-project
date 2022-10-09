@@ -10,24 +10,11 @@ import { dataPosts } from "./utils/LoadPost"
 
 
 export function App() {
-
   const [posts, setPosts] = useState([]);
   const [allPosts, setAllPosts] = useState([]);
   const [page, setPage] = useState(0);
   const [postsPerPage] = useState(5);
   const [searchValue, setSearchValue] = useState("");
-
-
-  const noMorePosts = posts + postsPerPage >= allPosts.length
-
-  const filteredPosts = !!searchValue ?
-    allPosts.filter(post => {
-      return post.title.toLowerCase().includes(searchValue.toLowerCase()
-      );
-    })
-    : posts;
-
-
 
   const loadPosts = useCallback(async (page, postsPerPage) => {
     const postsAndPhotos = await dataPosts();
@@ -36,22 +23,33 @@ export function App() {
     setAllPosts(postsAndPhotos);
   }, []);
 
+  useEffect(() => {
+    loadPosts(0, postsPerPage);
+  }, [loadPosts, postsPerPage])
+
   const loadMorePosts = () => {
     const nextPage = page + postsPerPage;
     const nextPosts = allPosts.slice(nextPage, nextPage + postsPerPage);
     posts.push(...nextPosts);
-    setPosts(posts)
-    setPage(nextPosts)
+
+    setPosts(posts);
+    setPage(nextPage);
   };
+
+
+  const filteredPosts = !!searchValue ?
+    allPosts.filter(post => {
+      return post.title.toLowerCase().includes(searchValue.toLowerCase()
+      );
+    })
+    : posts;
 
   const handleChange = (e) => {
     setSearchValue(e.target.value);
   };
 
-  useEffect(() => {
-    loadPosts(page, postsPerPage);
-    console.log('teste')
-  }, [loadPosts, postsPerPage])
+  const noMorePosts = posts + postsPerPage >= allPosts.length
+
 
   return (
     <Container>
