@@ -1,7 +1,6 @@
-import { Component, useEffect, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import { ButtonFN } from "./components/Button";
 import { Header } from "./components/header";
-import { PostCard } from "./components/postCard";
 import { Posts } from "./components/posts";
 import { InputResearch } from "./components/ResearchInput";
 import { Title } from "./components/title";
@@ -9,116 +8,93 @@ import { Container } from "./style/UI";
 
 import { dataPosts } from "./utils/LoadPost"
 
-class App extends Component {
-  constructor(props) {
-    super(props);
 
-    this.state = {
-      posts: [],
-      allPosts: [],
-      page: 0,
-      postsPerPage: 2,
-      searchValue: ""
-    }
-  }
+export function App() {
 
-  componentDidMount() {
-    this.loadPosts();
-  }
+  const [posts, setPosts] = useState([]);
+  const [allPosts, setAllPosts] = useState([]);
+  const [page, setPage] = useState(0);
+  const [postsPerPage] = useState(10);
+  const [searchValue, setSearchValue] = useState("");
 
-  loadPosts = async () => {
-    const { page, postsPerPage } = this.state
 
+  const noMorePosts = posts + postsPerPage >= allPosts.length
+
+  const filteredPosts = !!searchValue ?
+    allPosts.filter(post => {
+      return post.title.toLowerCase().includes(searchValue.toLowerCase()
+      );
+    })
+    : posts;
+
+
+
+  const loadPosts = useCallback(async (page, postsPerPage) => {
     const postsAndPhotos = await dataPosts();
-    this.setState({
-      posts: postsAndPhotos.slice(page, postsPerPage
-      ),
-      allPosts: postsAndPhotos
-    })
-  }
 
-  loadMorePosts = () => {
-    const {
-      page,
-      postsPerPage,
-      allPosts,
-      posts
-    } = this.state;
+    setPosts(postsAndPhotos.slice(page, postsPerPage));
+    setAllPosts(postsAndPhotos);
+  }, []);
 
+  const loadMorePosts = () => {
     const nextPage = page + postsPerPage;
-    const nextPosts = allPosts.slice(nextPage, nextPage + postsPerPage)
-    posts.push(...nextPosts)
+    const nextPosts = allPosts.slice(nextPage, nextPage + postsPerPage);
+    posts.push(...nextPosts);
+    setPosts(posts)
+    setPage(nextPosts)
+  };
 
-    this.setState({ posts, page: nextPage })
+  const handleChange = (e) => {
+    setSearchValue(e.target.value);
+  };
 
-    console.log(posts)
-  }
+  useEffect(() => {
+    loadPosts(page, postsPerPage);
+    console.log('teste')
+  }, [loadPosts, postsPerPage])
 
-  handleChange = (e) => {
-    const { searchValue } = this.state
-    const { value } = e.target;
-
-    this.setState({
-      searchValue: value
-    })
-    console.log(searchValue)
-  }
-
-  render() {
-    const { posts, postsPerPage, allPosts, searchValue } = this.state;
-
-    const noMorePosts = posts + postsPerPage >= allPosts.length
-
-    const filteredPosts = !!searchValue ?
-      allPosts.filter(post => {
-        return post.title.toLowerCase().includes(searchValue.toLowerCase()
-        );
-      })
-      : posts;
-
-    return (
-      <Container>
-        <Header>
-          <Title>JSONPLACEHOLDER API</Title>
-          {/* {
-            !!searchValue && (
-              <>
-                <h3>Search Value: {searchValue}</h3>
-              </>
-            )
-
-          } */}
-          <InputResearch
-            type="search"
-            value={searchValue}
-            onChange={this.handleChange}
-          />
-        </Header>
-
-
+  return (
+    <Container>
+      <Header>
+        <Title>JSONPLACEHOLDER API</Title>
         {
-          filteredPosts.length === 0 ? (
+          !!searchValue && (
             <>
-              <Title>Not Found post {searchValue}</Title>
+              <h3>Search Value: {searchValue}</h3>
             </>
           )
-            :
-            (
-              <Posts posts={filteredPosts} />
-            )
-        }
 
-        {
-          !searchValue && (
-            <ButtonFN
-              onClick={this.loadMorePosts}
-              disabled={noMorePosts}
-            >Load More Posts</ButtonFN>
-          )
         }
-      </Container>
-    )
-  }
+        <InputResearch
+          type="search"
+          value={searchValue}
+          onChange={handleChange}
+        />
+      </Header>
+
+
+      {
+        filteredPosts.length === 0 ? (
+          <>
+            <Title>Not Found post {searchValue}</Title>
+          </>
+        )
+          :
+          (
+            <Posts posts={filteredPosts} />
+          )
+      }
+
+      {
+        !searchValue && (
+          <ButtonFN
+            onClick={loadMorePosts}
+            disabled={noMorePosts}
+          >Load More Posts</ButtonFN>
+        )
+      }
+    </Container>
+  )
 }
 
 export default App
