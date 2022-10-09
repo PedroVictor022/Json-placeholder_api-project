@@ -14,7 +14,7 @@ export function App() {
   const [posts, setPosts] = useState([]);
   const [allPosts, setAllPosts] = useState([]);
   const [page, setPage] = useState(0);
-  const [postsPerPage] = useState(10);
+  const [postsPerPage] = useState(5);
   const [searchValue, setSearchValue] = useState("");
 
 
