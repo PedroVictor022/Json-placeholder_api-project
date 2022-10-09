@@ -13,7 +13,7 @@ export function App() {
   const [posts, setPosts] = useState([]);
   const [allPosts, setAllPosts] = useState([]);
   const [page, setPage] = useState(0);
-  const [postsPerPage] = useState(5);
+  const [postsPerPage] = useState(4);
   const [searchValue, setSearchValue] = useState("");
 
   const loadPosts = useCallback(async (page, postsPerPage) => {
@@ -55,14 +55,14 @@ export function App() {
     <Container>
       <Header>
         <Title>JSONPLACEHOLDER API</Title>
-        {
+        {/* {
           !!searchValue && (
             <>
               <h3>Search Value: {searchValue}</h3>
             </>
           )
 
-        }
+        } */}
         <InputResearch
           type="search"
           value={searchValue}

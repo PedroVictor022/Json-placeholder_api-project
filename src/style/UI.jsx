@@ -7,6 +7,8 @@ export const Container = styled.div`
    min-height: 100vh;
    height: 100%;
    padding: 0.5rem 2rem;
+
+   margin: 0 auto;
 `;
 
 export const HeaderContainer = styled.div`
@@ -20,10 +22,11 @@ export const HeaderContainer = styled.div`
 `
 
 export const ContainerCard = styled.div`
+   width: 50%;
    display: grid;
    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
    gap: 1.2rem;
-   margin-bottom: 1rem;
+   margin: 2rem auto;
 `
 
 export const Card = styled.div`
@@ -54,13 +57,13 @@ export const TitleContent = styled.h1`
 `
 
 export const ButtonContent = styled.div`
+   margin: 1rem auto;
    padding: 1rem;
-   margin-top: 0.7rem;
    text-align: center;
 
    font-weight: 700;
 
-   width: 100%;
+   width: 50%;
    
    background-color: #7004af;
    border-radius: 4px;
